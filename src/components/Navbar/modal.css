@@ -6,5 +6,5 @@
 
 .closed {
     transition: 0.5s all;
-    transform: translateY(-750px);
+    transform: translateY(-1000px);
 }
