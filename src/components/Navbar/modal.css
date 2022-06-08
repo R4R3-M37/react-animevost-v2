@@ -1,0 +1,10 @@
+.active {
+    transition: 0.3s all;
+    transform: translateY(0px);
+    backdrop-filter: blur(2px);
+}
+
+.closed {
+    transition: 0.5s all;
+    transform: translateY(-750px);
+}
