@@ -1,6 +1,6 @@
 # ฅ(^◕ᴥ◕^)ฅ Animevost.org v2 ฅ(^◕ᴥ◕^)ฅ
 
-![This is an image](https://imgur.com/dJek7Hj)
+![This is an image](Screenshot_4.png)
 
 # 🛠 Технологии:
 
