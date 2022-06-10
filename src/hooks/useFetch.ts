@@ -1,14 +1,15 @@
 import { SetStateAction, useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 
+import { baseUrl } from '../config'
+
 const useFetch: (url: string) => any = (url) => {
-	const baseUrl: string = 'https://api.animetop.info'
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 	const [response, setResponse] = useState<any>(null)
 	const [error, setError] = useState<any>(null)
 	const [options, setOptions] = useState<object | null>({})
 
-	const doFetch = useCallback((options: SetStateAction<object | null>) => {
+	const doFetch = useCallback((options: SetStateAction<object | null>): void => {
 		setIsLoading(true)
 		setOptions(options)
 	}, [])

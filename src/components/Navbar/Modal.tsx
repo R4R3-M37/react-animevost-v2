@@ -26,7 +26,8 @@ const Modal: React.FC<ModalProps> = ({ title, children, activeModal, setActiveMo
 	return (
 		<div
 			className={activeModal ? 'modal fade show d-block active' : 'modal fade show d-block closed'}
-			onClick={() => handleClickOutside()}>
+			onClick={() => handleClickOutside()}
+			tabIndex={-9999}>
 			<div className='modal-dialog' onClick={(e) => e.stopPropagation()}>
 				<div className='modal-content'>
 					<div className='modal-header'>

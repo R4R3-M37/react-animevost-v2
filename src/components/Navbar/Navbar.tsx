@@ -1,26 +1,25 @@
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import Modal from './Modal'
 import { SearchContext } from '../../context/SearchContext'
 
-import Modal from './Modal'
-
 const Navbar: React.FC = () => {
-	const [modalActive, setModalActive] = useState(false)
+	const [modalActive, setModalActive] = useState<boolean>(false)
 
 	const { searchValue, setSearchValue, setEnterKeyPressed } = useContext(SearchContext)
 
-	const handleModalActive = () => {
+	const handleModalActive = (): void => {
 		setModalActive(true)
 	}
 
-	const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		setSearchValue(e.target.value)
 	}
 
-	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+	const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
 		if (e.code === 'Enter') {
-			return setEnterKeyPressed((enterKeyPressed: boolean) => !enterKeyPressed)
+			setEnterKeyPressed((enterKeyPressed: boolean) => !enterKeyPressed)
 		}
 	}
 

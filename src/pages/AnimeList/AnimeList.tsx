@@ -1,30 +1,29 @@
 import React, { useContext, useEffect, useState } from 'react'
+import axios from 'axios'
+
+import { IAnimeResponseData } from '../../types/types'
 
 import useScrollPagination from '../../hooks/useScrollPagination'
 import AnimeCart from './components/AnimeCart'
-import useFetch from '../../hooks/useFetch'
-
 import { SearchContext } from '../../context/SearchContext'
-import { IAnimeResponseData } from '../../types/types'
+import { baseUrl } from '../../config'
 
 const AnimeList: React.FC = () => {
 	const [page, setPage] = useState<number>(1)
-	const { searchValue, enterKeyPressed } = useContext(SearchContext)
 
-	const apiUrl: string = `/v1/last?page=${page}&quantity=10`
+	const apiUrl: string = `last?page=${page}&quantity=10`
 	const response = useScrollPagination(page, setPage, apiUrl)
+	const [searchResponse, setSearchResponse] = useState<IAnimeResponseData[] | null>(null)
 
-	const apiSearchUrl = '/v1/search'
-	const [{ response: searchResponse }, doFetch] = useFetch(apiSearchUrl)
+	const { searchValue, enterKeyPressed } = useContext(SearchContext)
 
 	useEffect(() => {
 		if (searchValue !== '') {
-			doFetch({
-				method: 'post',
-				data: `name=${searchValue}`,
+			axios.post(`${baseUrl}search`, `name=${searchValue}`).then((resp) => {
+				setSearchResponse(resp.data.data)
 			})
 		}
-	}, [doFetch, enterKeyPressed])
+	}, [enterKeyPressed])
 
 	if (searchValue === '') {
 		return (
@@ -43,9 +42,7 @@ const AnimeList: React.FC = () => {
 			<div className='d-grid gap-5 mb-5 mt-5'>
 				<div className='row'>
 					{searchResponse
-						? searchResponse.data.map((anime: IAnimeResponseData) => (
-								<AnimeCart anime={anime} key={anime.id} />
-						  ))
+						? searchResponse.map((anime: IAnimeResponseData) => <AnimeCart anime={anime} key={anime.id} />)
 						: response.map((anime) => <AnimeCart anime={anime} key={anime.id} />)}
 				</div>
 			</div>

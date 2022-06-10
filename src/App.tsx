@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Route, Routes, useNavigate } from 'react-router-dom'
-import { SearchContext } from './context/SearchContext'
 
 import Navbar from './components/Navbar/Navbar'
 import {
@@ -12,10 +11,11 @@ import {
 	AnimeSchedule,
 	FavoriteAnime,
 } from './pages'
+import { SearchContext } from './context/SearchContext'
 
 const App: React.FC = () => {
-	const [searchValue, setSearchValue] = useState('')
-	const [enterKeyPressed, setEnterKeyPressed] = useState(false)
+	const [searchValue, setSearchValue] = useState<string>('')
+	const [enterKeyPressed, setEnterKeyPressed] = useState<boolean>(false)
 
 	const navigate = useNavigate()
 

@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-
-import useFetch from '../../hooks/useFetch'
-import Spoiler from '../../components/Spoiler'
+import axios from 'axios'
 
 import { IAnimePageMediaResponse, IAnimeResponseData } from '../../types/types'
+
 import MediaPlayer from './MediaPlayer'
+import Spoiler from '../../components/Spoiler'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
+
+import { baseUrl } from '../../config'
 
 const AnimePage: React.FC = () => {
 	const { animeId } = useParams<{ animeId: string }>()
-	const apiUrl: string = '/v1/info'
-	const apiUrlMedia: string = '/v1/playlist'
 
-	const [{ response }, doFetch] = useFetch(apiUrl)
-	const [{ response: responseMedia }, doFetchMedia] = useFetch(apiUrlMedia)
+	const [response, setResponse] = useState<IAnimeResponseData[]>([])
+	const [responseMedia, setResponseMedia] = useState<IAnimePageMediaResponse[] | null>(null)
 
 	const [videoActive, setVideoActive] = useState<string>('')
 	const [highDefinition, setHighDefinition] = useState<boolean>(false)
+
 	const [favoriteAnimeId, setFavoriteAnimeId] = useLocalStorage('favoriteAnimeId', '')
 
-	const handleFavoriteButton = (id: any) => {
+	const handleFavoriteButton = (id: string | undefined) => {
 		if (favoriteAnimeId.includes(animeId)) {
 			setFavoriteAnimeId(favoriteAnimeId.replace(id + ',', ''))
 		} else {
@@ -32,7 +33,7 @@ const AnimePage: React.FC = () => {
 		setHighDefinition((highDefinition) => !highDefinition)
 	}
 
-	const anime: IAnimeResponseData = response && response.data[0]
+	const anime: IAnimeResponseData = response && response[0]
 
 	const genre =
 		anime &&
@@ -51,26 +52,26 @@ const AnimePage: React.FC = () => {
 		})
 
 	useEffect(() => {
-		doFetch({
-			method: 'post',
-			data: `id=${animeId}`,
-		})
-		doFetchMedia({
-			method: 'post',
-			data: `id=${animeId}`,
-		})
-	}, [doFetch, doFetchMedia, animeId])
-
-	useEffect(() => {
-		if (!responseMedia) {
-			return
-		}
-		if (highDefinition) {
-			setVideoActive(responseMedia[0].hd)
-		} else {
-			setVideoActive(responseMedia[0].std)
+		if (responseMedia) {
+			if (highDefinition) {
+				setVideoActive(responseMedia[0].hd)
+			} else {
+				setVideoActive(responseMedia[0].std)
+			}
 		}
 	}, [responseMedia, highDefinition])
+
+	useEffect(() => {
+		axios.post(`${baseUrl}info`, `id=${animeId}`).then((resp) => {
+			setResponse(resp.data.data)
+		})
+	}, [])
+
+	useEffect(() => {
+		axios.post(`${baseUrl}playlist`, `id=${animeId}`).then((resp) => {
+			setResponseMedia(resp.data)
+		})
+	}, [])
 
 	if (!anime) {
 		return null

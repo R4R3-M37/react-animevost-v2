@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+
 import { IAnimeResponseData } from '../types/types'
+
+import { baseUrl } from '../config'
 
 const useScrollPagination: (
 	page: number,
-	setPage: (value: ((prevState: number) => number) | number) => void,
+	setPage: (page: (page: number) => number) => void,
 	apiUrl: string
 ) => IAnimeResponseData[] = (page, setPage, apiUrl) => {
-	const [response, setResponse] = useState<any>([])
+	const [response, setResponse] = useState<IAnimeResponseData[]>([])
 	const [fetching, setFetching] = useState<boolean>(true)
 
-	const baseUrl: string = 'https://api.animetop.info'
-
-	const scrollHandler = (e: any) => {
-		if (e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop + window.innerHeight) < 1) {
+	const scrollHandler = (): void => {
+		if (document.documentElement.scrollHeight - (document.documentElement.scrollTop + window.innerHeight) < 1) {
 			setFetching(true)
 		}
 	}

@@ -1,16 +1,17 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import useFetch from '../../hooks/useFetch'
 import { IAnimeResponseData, IAnimeScheduleData } from '../../types/types'
 import Spoiler from '../../components/Spoiler'
+import axios from 'axios'
 
 const AnimeSchedule = () => {
 	const apiUrlSchedule: string = '/v1/rasp'
-	const apiUrl: string = '/v1/info'
 
 	const [{ response: responseSchedule }, doFetchSchedule] = useFetch(apiUrlSchedule)
-	const [{ response: responseAnime }, doFetch] = useFetch(apiUrl)
+
+	const [responseAnime, setResponseAnime] = useState<any>(null)
 
 	const id: number = responseSchedule && responseSchedule.map((anime: IAnimeScheduleData) => anime.id).join(',')
 
@@ -41,18 +42,19 @@ const AnimeSchedule = () => {
 		}
 	}
 
+	useEffect(() => {
+		if (id !== null) {
+			axios.post('https://api.animetop.info/v1/info', `id=${id}`).then((resp) => {
+				setResponseAnime(resp.data)
+			})
+		}
+	}, [id])
+
 	useCallback(() => {
 		doFetchSchedule({
 			method: 'get',
 		})
 	}, [doFetchSchedule])
-
-	useEffect(() => {
-		doFetch({
-			method: 'post',
-			data: `id=${id && id}`,
-		})
-	}, [doFetch, id])
 
 	return (
 		<div className='container'>
