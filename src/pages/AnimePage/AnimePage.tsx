@@ -15,19 +15,24 @@ const AnimePage: React.FC = () => {
 
 	const [{ response }, doFetch] = useFetch(apiUrl)
 	const [{ response: responseMedia }, doFetchMedia] = useFetch(apiUrlMedia)
-	const [videoActive, setVideoActive] = useState(null)
-	const [favoriteAnimeId, setFavoriteAnimeId] = useLocalStorage('favoriteAnimeId', '')
 
-	const anime: IAnimeResponseData = response && response.data[0]
+	const [videoActive, setVideoActive] = useState<string>('')
+	const [highDefinition, setHighDefinition] = useState<boolean>(false)
+	const [favoriteAnimeId, setFavoriteAnimeId] = useLocalStorage('favoriteAnimeId', '')
 
 	const handleFavoriteButton = (id: any) => {
 		if (favoriteAnimeId.includes(animeId)) {
 			setFavoriteAnimeId(favoriteAnimeId.replace(id + ',', ''))
-			// setFavoriteAnimeId(favoriteAnimeId.replace(id, '').repeat(',', '')) - очистить все
 		} else {
 			setFavoriteAnimeId(favoriteAnimeId + id + ',')
 		}
 	}
+
+	const handleChangeHighDefinition = () => {
+		setHighDefinition((highDefinition) => !highDefinition)
+	}
+
+	const anime: IAnimeResponseData = response && response.data[0]
 
 	const genre =
 		anime &&
@@ -50,21 +55,22 @@ const AnimePage: React.FC = () => {
 			method: 'post',
 			data: `id=${animeId}`,
 		})
-	}, [doFetch, animeId])
-
-	useEffect(() => {
 		doFetchMedia({
 			method: 'post',
 			data: `id=${animeId}`,
 		})
-	}, [doFetchMedia, animeId])
+	}, [doFetch, doFetchMedia, animeId])
 
 	useEffect(() => {
 		if (!responseMedia) {
 			return
 		}
-		setVideoActive(responseMedia[0].std)
-	}, [responseMedia])
+		if (highDefinition) {
+			setVideoActive(responseMedia[0].hd)
+		} else {
+			setVideoActive(responseMedia[0].std)
+		}
+	}, [responseMedia, highDefinition])
 
 	if (!anime) {
 		return null
@@ -77,15 +83,22 @@ const AnimePage: React.FC = () => {
 				<button className='btn btn-outline-secondary mx-3' onClick={() => handleFavoriteButton(animeId)}>
 					{favoriteAnimeId.includes(animeId) ? 'Убрать' : 'Добавить'}
 				</button>
+				<button className='btn btn-outline-secondary my-3' onClick={() => handleChangeHighDefinition()}>
+					Сменить качество {highDefinition ? '(HD)' : '(STD)'}
+				</button>
 			</div>
 			<MediaPlayer src={videoActive} id={videoActive} />
 			<Spoiler title={'Серии'} show>
 				{responseMedia ? (
 					responseMedia.map((anime: IAnimePageMediaResponse, index: number) => (
 						<button
-							onClick={() => setVideoActive(anime.std)}
+							onClick={() => setVideoActive(highDefinition ? anime.hd : anime.std)}
 							className={
-								anime.std === videoActive
+								highDefinition
+									? anime.hd === videoActive
+										? 'me-2 mb-1 mt-1 btn btn-secondary'
+										: 'me-2 mb-1 mt-1 btn btn-outline-secondary'
+									: anime.std === videoActive
 									? 'me-2 mb-1 mt-1 btn btn-secondary'
 									: 'me-2 mb-1 mt-1 btn btn-outline-secondary'
 							}

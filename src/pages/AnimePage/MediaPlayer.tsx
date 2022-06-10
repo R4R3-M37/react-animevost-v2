@@ -1,6 +1,11 @@
 import React from 'react'
 
-const MediaPlayer = ({ src, id }: any) => {
+interface MediaPlayerProps {
+	src: string
+	id: string
+}
+
+const MediaPlayer: React.FC<MediaPlayerProps> = ({ src, id }) => {
 	return (
 		<div className='media-player'>
 			<video className='media-source' controls loop key={id}>
