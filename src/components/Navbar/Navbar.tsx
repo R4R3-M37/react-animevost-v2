@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
 								className='nav-link'
 								data-bs-toggle='modal'
 								data-bs-target='#searchModal'>
-								Расширеный поиск
+								Расширенный поиск
 							</Link>
 						</li>
 						<input
