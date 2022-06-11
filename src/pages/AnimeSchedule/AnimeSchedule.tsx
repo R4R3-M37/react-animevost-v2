@@ -5,9 +5,10 @@ import useFetch from '../../hooks/useFetch'
 import { IAnimeResponseData, IAnimeScheduleData } from '../../types/types'
 import Spoiler from '../../components/Spoiler'
 import axios from 'axios'
+import { baseUrl } from '../../config'
 
 const AnimeSchedule = () => {
-	const apiUrlSchedule: string = '/v1/rasp'
+	const apiUrlSchedule: string = 'rasp'
 
 	const [{ response: responseSchedule }, doFetchSchedule] = useFetch(apiUrlSchedule)
 
@@ -44,7 +45,7 @@ const AnimeSchedule = () => {
 
 	useEffect(() => {
 		if (id !== null) {
-			axios.post('https://api.animetop.info/v1/info', `id=${id}`).then((resp) => {
+			axios.post(`${baseUrl}info`, `id=${id}`).then((resp) => {
 				setResponseAnime(resp.data)
 			})
 		}

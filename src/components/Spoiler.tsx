@@ -29,7 +29,7 @@ const Spoiler: React.FC<ISpoilerProps> = ({ children, title, className, show }) 
 					id={`collapse${option}`}
 					className={show ? 'accordion-collapse collapse show' : 'accordion-collapse collapse'}
 					data-bs-parent={`#accordion${option}`}>
-					<div className='accordion-body'>{children}</div>
+					<div className='accordion-body text-center'>{children}</div>
 				</div>
 			</div>
 		</div>

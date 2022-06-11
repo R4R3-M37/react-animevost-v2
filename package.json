@@ -41,8 +41,9 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.182",
     "axios": "^0.27.2",
-    "react-router-dom": "^6.3.0",
-    "video.js": "^7.19.2"
+    "lodash": "^4.17.21",
+    "react-router-dom": "^6.3.0"
   }
 }

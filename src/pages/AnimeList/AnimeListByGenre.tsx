@@ -1,28 +1,27 @@
-import React, { useEffect } from 'react'
-import { IAnimeResponseData } from '../../types/types'
-import AnimeCart from './components/AnimeCart'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import useFetch from '../../hooks/useFetch'
+import axios from 'axios'
+
+import AnimeCart from './components/AnimeCart'
+import { baseUrl } from '../../config'
+
+import { IAnimeResponseData } from '../../types/types'
 
 const AnimeListByGenre: React.FC = () => {
 	const { genre } = useParams<{ genre: string }>()
-
-	const apiUrl: string = '/v1/search'
-	const [{ response }, doFetch] = useFetch(apiUrl)
+	const [response, setResponse] = useState<IAnimeResponseData[] | null>(null)
 
 	useEffect(() => {
-		doFetch({
-			method: 'post',
-			data: `gen=${genre}`,
+		axios.post(`${baseUrl}search`, `gen=${genre}`).then((resp) => {
+			setResponse(resp.data.data)
 		})
-	}, [doFetch, genre])
+	}, [])
 
 	return (
 		<div className='container'>
 			<div className='d-grid gap-5 mb-5 mt-5'>
 				<div className='row'>
-					{response &&
-						response.data.map((anime: IAnimeResponseData) => <AnimeCart anime={anime} key={anime.id} />)}
+					{response && response.map((anime) => <AnimeCart anime={anime} key={anime.id} />)}
 				</div>
 			</div>
 		</div>

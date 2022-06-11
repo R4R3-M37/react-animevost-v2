@@ -1,6 +1,6 @@
-# ฅ(^◕ᴥ◕^)ฅ Animevost.org v2 ฅ(^◕ᴥ◕^)ฅ
+# ฅ(^◕ᴥ◕^)ฅ Animevost.org v2 (REMASTERED) ฅ(^◕ᴥ◕^)ฅ
 
-![This is an image](Screenshot_4.png)
+![This is an image](https://imgur.com/dJek7Hj)
 
 # 🛠 Технологии:
 
@@ -9,7 +9,8 @@
 - **React Router v6** (навигация)
 - **Axios + Fetch** (отправка запроса на бэкенд)
 - **React Hooks** (хуки)
-- **Bootstrap CSS** (стилизация)
+
+Comings soon v3 with mega menu and css-modules w/o bootstrap 5
 
 ## Learn More
 

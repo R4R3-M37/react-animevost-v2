@@ -3,43 +3,22 @@ import './modal.css'
 
 interface ModalProps {
 	title: string
+	target: string
 	children: React.ReactNode
-	activeModal: boolean
-	setActiveModal: (activeModal: boolean) => void
+	footer: React.ReactNode
 }
 
-const Modal: React.FC<ModalProps> = ({ title, children, activeModal, setActiveModal }) => {
-	const handleClickOutside = () => {
-		setActiveModal(false)
-	}
-
-	const handleClickX = () => {
-		setActiveModal(false)
-	}
-
-	if (activeModal) {
-		document.body.style.overflow = 'hidden'
-	} else if (!activeModal) {
-		document.body.style.overflow = 'auto'
-	}
-
+const Modal: React.FC<ModalProps> = ({ title, children, target, footer }) => {
 	return (
-		<div
-			className={activeModal ? 'modal fade show d-block active' : 'modal fade show d-block closed'}
-			onClick={() => handleClickOutside()}
-			tabIndex={-9999}>
+		<div className='modal fade' id={target} tabIndex={-1} aria-labelledby={`${target}Label`} aria-hidden='true'>
 			<div className='modal-dialog' onClick={(e) => e.stopPropagation()}>
 				<div className='modal-content'>
 					<div className='modal-header'>
 						<h5 className='modal-title'>{title}</h5>
-						<button className='btn-close' onClick={() => handleClickX()} />
+						<button className='btn-close' data-bs-dismiss='modal' />
 					</div>
 					<div className='modal-body'>{children}</div>
-					<div className='modal-footer'>
-						<button type='button' className='btn btn-secondary' onClick={() => handleClickX()}>
-							Закрыть
-						</button>
-					</div>
+					<div className='modal-footer'>{footer}</div>
 				</div>
 			</div>
 		</div>

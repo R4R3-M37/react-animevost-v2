@@ -18,7 +18,7 @@ const AnimeCart: React.FC<IAnimeCart> = ({ anime }) => {
 						<div>
 							<div className='progress'>
 								<div
-									className='progress-bar progress-bar-animated bg-success progress-bar-striped'
+									className='progress-bar progress-bar-animated bg-success progress-bar'
 									role='progressbar'
 									aria-valuenow={(anime.rating / anime.votes) * 20}
 									aria-valuemin={0}
@@ -27,7 +27,7 @@ const AnimeCart: React.FC<IAnimeCart> = ({ anime }) => {
 									{(anime.rating / anime.votes).toFixed(2)}
 								</div>
 								<div
-									className='progress-bar bg-danger progress-bar-striped'
+									className='progress-bar bg-danger progress-bar'
 									role='progressbar'
 									aria-valuenow={101 - (anime.rating / anime.votes) * 20}
 									aria-valuemin={0}

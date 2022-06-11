@@ -1,29 +1,27 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
-import useFetch from '../../hooks/useFetch'
 import AnimeCart from './components/AnimeCart'
+import { baseUrl } from '../../config'
 
 import { IAnimeResponseData } from '../../types/types'
 
 const AnimeByYear: React.FC = () => {
 	const { year } = useParams<{ year: string }>()
-	const apiUrl: string = '/v1/search'
-	const [{ response }, doSearch] = useFetch(apiUrl)
+	const [response, setResponse] = useState<IAnimeResponseData[] | null>(null)
 
 	useEffect(() => {
-		doSearch({
-			method: 'post',
-			data: `year=${year}`,
+		axios.post(`${baseUrl}search`, `year=${year}`).then((resp) => {
+			setResponse(resp.data.data)
 		})
-	}, [doSearch, year])
+	}, [])
 
 	return (
 		<div className='container'>
 			<div className='d-grid gap-5 mb-5 mt-5'>
 				<div className='row'>
-					{response &&
-						response.data.map((anime: IAnimeResponseData) => <AnimeCart anime={anime} key={anime.id} />)}
+					{response && response.map((anime) => <AnimeCart anime={anime} key={anime.id} />)}
 				</div>
 			</div>
 		</div>

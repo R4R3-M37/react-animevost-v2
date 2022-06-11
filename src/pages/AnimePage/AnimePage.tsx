@@ -79,13 +79,13 @@ const AnimePage: React.FC = () => {
 
 	return (
 		<div className='container'>
-			<div className='my-3 d-flex justify-content-center align-items-center'>
+			<div className='my-3 d-flex justify-content-center align-items-center flex-row flex-wrap'>
 				<h4 className='text-center my-3'>{anime.title.split('/')[0]}</h4>
 				<button className='btn btn-outline-secondary mx-3' onClick={() => handleFavoriteButton(animeId)}>
 					{favoriteAnimeId.includes(animeId) ? 'Убрать' : 'Добавить'}
 				</button>
 				<button className='btn btn-outline-secondary my-3' onClick={() => handleChangeHighDefinition()}>
-					Сменить качество {highDefinition ? '(HD)' : '(STD)'}
+					{highDefinition ? '(HD)' : '(STD)'}
 				</button>
 			</div>
 			<MediaPlayer src={videoActive} id={videoActive} />
